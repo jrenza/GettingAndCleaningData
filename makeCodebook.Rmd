@@ -1,0 +1,67 @@
+---
+title: "makeCodebook.Rmd"
+author: "Jeff Renza"
+date: "July 26, 2014"
+output: html_document
+---
+
+Variable list and descriptions
+------------------------------
+
+Variable name    | Description
+-----------------|------------
+subject          | ID the subject who performed the activity for each window sample. Its range is from 1 to 30.
+activity         | Activity name
+featDomain       | Feature: Time domain signal or frequency domain signal (Time or Freq)
+featInstrument   | Feature: Measuring instrument (Accelerometer or Gyroscope)
+featAcceleration | Feature: Acceleration signal (Body or Gravity)
+featVariable     | Feature: Variable (Mean or SD)
+featJerk         | Feature: Jerk signal
+featMagnitude    | Feature: Magnitude of the signals calculated using the Euclidean norm
+featAxis         | Feature: 3-axial signals in the X, Y and Z directions (X, Y, or Z)
+featCount        | Feature: Count of data points used to compute `average`
+featAverage      | Feature: Average of each variable for each activity and each subject
+
+Dataset structure
+-----------------
+
+```{r}
+str(dt_tidy)
+```
+
+Key variables in the data table
+-------------------------------
+
+```{r}
+key(dt_tidy)
+```
+
+Show a few rows of dataset
+--------------------------
+
+```{r}
+dt_tidy
+```
+
+Summary of vars
+---------------
+
+```{r}
+summary(dt_tidy)
+```
+
+List all possible combinations of features
+------------------------------------------
+
+```{r}
+dt_tidy[, .N, by=c(names(dt_tidy)[grep('^feat', names(dt_tidy))])]
+```
+
+Save to file
+------------
+
+Save data table to a tab-delim. text file called 'HumanActivityRecognitionUsingSmartPhones_Dataset.txt'
+
+```{r save}
+file <- file.path('./', 'HumanActivityRecognitionUsingSmartPhones_Dataset.txt')
+write.table(dt_tidy, file, quote=F, sep='\t', row.names=F)
